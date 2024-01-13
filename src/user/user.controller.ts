@@ -21,18 +21,18 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Post()
-  async create(@Body() { email, name, password }: CreateUserDTO) {
-    return { email, name, password };
+  async create(@Body() data: CreateUserDTO) {
+    return this.userService.create(data);
   }
 
   @Get()
   async read() {
-    return { users: [] };
+    return this.userService.list();
   }
 
   @Get(':id')
   async readOne(@Param('id', ParseIntPipe) id: number) {
-    return { user: {}, id };
+    return this.userService.show(id);
   }
 
   @Put(':id')
