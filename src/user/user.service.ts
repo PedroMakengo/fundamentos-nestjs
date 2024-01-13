@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateUserDTO } from './dto/create-user.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { UpdatePutUserDTO } from './dto/update-put-user.dto';
@@ -9,15 +9,17 @@ export class UserService {
   constructor(private readonly prisma: PrismaService) {}
 
   // Create user
-  async create({ email, name, password }: CreateUserDTO) {
+  async create({ email, name, password, birthAt }: CreateUserDTO) {
     return this.prisma.user.create({
       data: {
         email,
         name,
         password,
+        birthAt: birthAt ? new Date(birthAt) : null,
       },
     });
   }
+
   //Read user
   async list() {
     return this.prisma.user.findMany();
@@ -33,6 +35,8 @@ export class UserService {
     { email, name, password, birthAt }: UpdatePutUserDTO,
     id: number,
   ) {
+    await this.exists(id);
+
     return this.prisma.user.update({
       data: {
         email,
@@ -50,10 +54,18 @@ export class UserService {
     id: number,
   ) {
     const data: any = {};
-    if (birthAt) data.birthAt = new Date(data.birthAt);
-    if (email) data.email = email;
-    if (name) data.name = name;
-    if (password) data.password = password;
+    if (birthAt) {
+      data.birthAt = new Date(birthAt);
+    }
+    if (email) {
+      data.email = email;
+    }
+    if (name) {
+      data.name = name;
+    }
+    if (password) {
+      data.password = password;
+    }
 
     return this.prisma.user.update({
       data,
@@ -61,7 +73,15 @@ export class UserService {
     });
   }
 
+  // Delete User
   async delete(id: number) {
+    await this.exists(id);
     return this.prisma.user.delete({ where: { id } });
+  }
+
+  async exists(id: number) {
+    if (!(await this.show(id))) {
+      throw new NotFoundException(`O usuário ${id} não existe.`);
+    }
   }
 }
