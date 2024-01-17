@@ -3,7 +3,7 @@ import {
   IsEmail,
   IsOptional,
   IsString,
-  IsStrongPassword,
+  MinLength,
 } from 'class-validator';
 
 export class CreateUserDTO {
@@ -14,10 +14,8 @@ export class CreateUserDTO {
   @IsEmail()
   email: string;
 
-  @IsStrongPassword({
-    minLength: 6,
-    minUppercase: 1,
-  })
+  @IsString()
+  @MinLength(6)
   password: string;
 
   @IsOptional()
