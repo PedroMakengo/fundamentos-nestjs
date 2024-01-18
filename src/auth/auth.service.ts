@@ -11,6 +11,9 @@ import { UserService } from '../user/user.service';
 
 @Injectable()
 export class AuthService {
+  private issuer = 'login';
+  private audience = 'users';
+
   constructor(
     private readonly jwtService: JwtService,
     private readonly prisma: PrismaService,
@@ -29,8 +32,8 @@ export class AuthService {
         {
           expiresIn: '7 days',
           subject: String(user.id),
-          issuer: 'login',
-          audience: 'users',
+          audience: this.audience,
+          issuer: this.issuer,
         },
       ),
     };
@@ -39,13 +42,22 @@ export class AuthService {
   async checkToken(token: string) {
     try {
       const data = this.jwtService.verify(token, {
-        audience: 'users',
-        issuer: 'login',
+        audience: this.audience,
+        issuer: this.issuer,
       });
 
       return data;
     } catch (error) {
       throw new BadRequestException(error);
+    }
+  }
+
+  async isValidToken(token: string) {
+    try {
+      this.checkToken(token);
+      return true;
+    } catch (error) {
+      return false;
     }
   }
 
