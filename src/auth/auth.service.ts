@@ -90,8 +90,6 @@ export class AuthService {
   }
 
   async reset(password: string, token: string) {
-    // TO DO Se o token for válido
-
     console.log(token);
     const id = 0;
 
@@ -104,6 +102,7 @@ export class AuthService {
   }
 
   async register(data: AuthRegisterDTO) {
+    data.role = Number(data.role); // Garantir que o role será mesmo number
     const user = await this.userService.create(data);
 
     return this.createToken(user);
