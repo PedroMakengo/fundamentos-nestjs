@@ -67,7 +67,6 @@ export class AuthService {
     const user = await this.prisma.user.findFirst({
       where: {
         email,
-        password,
       },
     });
 
@@ -75,8 +74,13 @@ export class AuthService {
       throw new UnauthorizedException('Email e/ou senha incorretos.');
     }
 
+    if (!(await bcrypt.compare(password, user.password))) {
+      throw new UnauthorizedException('Email e/ou senha incorretos.');
+    }
+
     return this.createToken(user);
   }
+
   async forget(email: string) {
     const user = await this.prisma.user.findFirst({
       where: { email },
