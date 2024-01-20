@@ -7,7 +7,7 @@ import { PrismaModule } from 'src/database/prisma.module';
 
 @Module({
   imports: [
-    JwtModule.register({ secret: `v;d@J)R~AcD4*6Pea:mu%2'}EjzM]"Y!` }),
+    JwtModule.register({ secret: process.env.JWT_SECRET }),
     forwardRef(() => UserModule),
     PrismaModule,
   ],
