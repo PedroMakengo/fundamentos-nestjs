@@ -4,8 +4,6 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { User } from '@prisma/client';
-import { PrismaService } from 'src/database/prisma.service';
 import { AuthRegisterDTO } from './dto/auth-register.dto';
 import { UserService } from '../user/user.service';
 
@@ -19,7 +17,7 @@ export class AuthService {
 
   constructor(
     private readonly jwtService: JwtService,
-    private readonly prisma: PrismaService,
+    // private readonly prisma: PrismaService,
     private readonly userService: UserService,
     private readonly mailer: MailerService,
   ) {}
@@ -66,11 +64,11 @@ export class AuthService {
   }
 
   async login(email: string, password: string) {
-    const user = await this.prisma.user.findFirst({
-      where: {
-        email,
-      },
-    });
+    // const user = await this.prisma.user.findFirst({
+    //   where: {
+    //     email,
+    //   },
+    // });
 
     if (!user) {
       throw new UnauthorizedException('Email e/ou senha incorretos.');
@@ -131,10 +129,10 @@ export class AuthService {
       const salt = await bcrypt.genSalt();
       password = await bcrypt.hash(password, salt);
 
-      const user = await this.prisma.user.update({
-        where: { id: Number(data.id) },
-        data: { password },
-      });
+      // const user = await this.prisma.user.update({
+      //   where: { id: Number(data.id) },
+      //   data: { password },
+      // });
 
       return this.createToken(user);
     } catch (error) {

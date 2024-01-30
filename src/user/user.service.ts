@@ -1,6 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateUserDTO } from './dto/create-user.dto';
-import { PrismaService } from 'src/database/prisma.service';
 import { UpdatePutUserDTO } from './dto/update-put-user.dto';
 import { UpdatePatchUserDTO } from './dto/update-patch-user.dto';
 
@@ -8,7 +7,7 @@ import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UserService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor() {}
 
   // Create user
   async create({ email, name, password, birthAt, role }: CreateUserDTO) {
@@ -16,15 +15,15 @@ export class UserService {
 
     const passwordHash = await bcrypt.hash(password, salt);
 
-    return this.prisma.user.create({
-      data: {
-        email,
-        name,
-        password: passwordHash,
-        birthAt: birthAt ? new Date(birthAt) : null,
-        role,
-      },
-    });
+    // return this.prisma.user.create({
+    //   data: {
+    //     email,
+    //     name,
+    //     password: passwordHash,
+    //     birthAt: birthAt ? new Date(birthAt) : null,
+    //     role,
+    //   },
+    // });
   }
 
   //Read user
@@ -35,7 +34,7 @@ export class UserService {
   // Read One User
   async show(id: number) {
     await this.exists(id);
-    return this.prisma.user.findUnique({ where: { id } });
+    // return this.prisma.user.findUnique({ where: { id } });
   }
 
   // Update
@@ -49,16 +48,16 @@ export class UserService {
 
     const passwordHash = await bcrypt.hash(password, salt);
 
-    return this.prisma.user.update({
-      data: {
-        email,
-        name,
-        password: passwordHash,
-        birthAt: birthAt ? new Date(birthAt) : null,
-        role,
-      },
-      where: { id },
-    });
+    // return this.prisma.user.update({
+    //   data: {
+    //     email,
+    //     name,
+    //     password: passwordHash,
+    //     birthAt: birthAt ? new Date(birthAt) : null,
+    //     role,
+    //   },
+    //   where: { id },
+    // });
   }
 
   // Update Partial
@@ -93,12 +92,12 @@ export class UserService {
   // Delete User
   async delete(id: number) {
     await this.exists(id);
-    return this.prisma.user.delete({ where: { id } });
+    // return this.prisma.user.delete({ where: { id } });
   }
 
   async exists(id: number) {
-    if (!(await this.prisma.user.count({ where: { id } }))) {
-      throw new NotFoundException(`O usuário ${id} não existe.`);
-    }
+    // if (!(await this.prisma.user.count({ where: { id } }))) {
+    //   throw new NotFoundException(`O usuário ${id} não existe.`);
+    // }
   }
 }
