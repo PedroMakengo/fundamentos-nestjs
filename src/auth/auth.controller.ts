@@ -25,7 +25,6 @@ import {
   FilesInterceptor,
 } from '@nestjs/platform-express';
 
-import { writeFile } from 'fs/promises';
 import { join } from 'path';
 import { FileService } from 'src/file/file.service';
 
@@ -43,8 +42,8 @@ export class AuthController {
   }
 
   @Post('register')
-  async register(@Body() body: AuthRegisterDTO) {
-    return this.authService.register(body);
+  async register(@Body() data: AuthRegisterDTO) {
+    return this.authService.register(data);
   }
 
   @Post('forget')

@@ -29,6 +29,7 @@ export class UserController {
 
   @Post()
   async create(@Body() data: CreateUserDTO) {
+    console.log(data);
     return this.userService.create(data);
   }
 
