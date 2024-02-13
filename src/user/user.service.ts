@@ -22,7 +22,7 @@ export class UserService {
   // Create user
   async create(data: CreateUserDTO) {
     if (
-      await this.usersRepository.exists({
+      await this.usersRepository.exist({
         where: { email: data.email },
       })
     ) {
@@ -105,7 +105,7 @@ export class UserService {
   }
 
   async exists(id: number) {
-    if (!(await this.usersRepository.exists({ where: { id } }))) {
+    if (!(await this.usersRepository.exist({ where: { id } }))) {
       throw new NotFoundException(`O usuário ${id} não existe.`);
     }
   }
