@@ -6,6 +6,8 @@ import { createUserDTO } from '../testing/create-user.dto.mock';
 import { Repository } from 'typeorm';
 import { UserEntity } from './entity/user.entity';
 import { getRepositoryToken } from '@nestjs/typeorm';
+import { updatePutUserDTO } from '../testing/update-put-user.dto.mock';
+import { updatePatchUserDTO } from '../testing/update-patch-user.dto';
 
 describe('UserService', () => {
   let userService: UserService;
@@ -27,7 +29,7 @@ describe('UserService', () => {
 
   describe('Create', () => {
     test('method create', async () => {
-      spyOn(userRepository, exist);
+      jest.spyOn(userRepository, 'exist').mockResolvedValueOnce(false);
       const result = await userService.create(createUserDTO);
 
       expect(result).toEqual(userEntityList[0]);
@@ -46,6 +48,25 @@ describe('UserService', () => {
       expect(result).toEqual(userEntityList[0]);
     });
   });
-  describe('Update', () => {});
-  describe('Delete', () => {});
+  describe('Update', () => {
+    test('Method update', async () => {
+      const result = await userService.update(updatePutUserDTO, 1);
+
+      expect(result).toEqual(userEntityList[0]);
+    });
+
+    test('Method updatePartial', async () => {
+      const result = await userService.updatePartial(updatePatchUserDTO, 1);
+
+      expect(result).toEqual(userEntityList[0]);
+    });
+  });
+
+  describe('Delete', () => {
+    test('Method delete', async () => {
+      const result = await userService.delete(1);
+
+      expect(result).toEqual(true);
+    });
+  });
 });
