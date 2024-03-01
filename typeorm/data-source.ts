@@ -3,6 +3,7 @@ import { DataSource } from 'typeorm';
 
 dotenv.config();
 
+// Conexão com o Typeorm
 const dataSource = new DataSource({
   type: 'mysql',
   host: 'localhost',
