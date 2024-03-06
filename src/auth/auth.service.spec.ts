@@ -7,6 +7,8 @@ import { mailerServiceMock } from '../testing/mail-service.mock';
 import { userEntityList } from '../testing/user-entity-list.mock';
 import { accessToken } from '../testing/token.mock';
 import { jwtPayload } from '../testing/jwet-payload.mock';
+import { resetToken } from '../testing/reset-token.mock';
+import { authRegisterDTO } from '../testing/auth-register-dto.mock';
 
 describe('AuthService', () => {
   let authService: AuthService;
@@ -47,5 +49,29 @@ describe('AuthService', () => {
       expect(result).toEqual(true);
     });
   });
-  describe('Autenticação', () => {});
+  describe('Autenticação', () => {
+    test('login method', async () => {
+      const result = await authService.login('mariantonio@gmail.com', '123456');
+
+      expect(result).toEqual({ accessToken });
+    });
+
+    test('forget method', async () => {
+      const result = await authService.forget('mariantonio@gmail.com');
+
+      expect(result).toEqual(true);
+    });
+
+    test('reset method', async () => {
+      const result = await authService.reset('660434343', resetToken);
+
+      expect(result).toEqual({ accessToken });
+    });
+
+    test('reset method', async () => {
+      const result = await authService.register(authRegisterDTO);
+
+      expect(result).toEqual({ accessToken });
+    });
+  });
 });
