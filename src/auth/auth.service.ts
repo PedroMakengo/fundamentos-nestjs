@@ -26,9 +26,7 @@ export class AuthService {
     private usersRepository: Repository<UserEntity>,
   ) {}
 
-  async createToken(user: UserEntity) {
-    console.log('CreateToken', { user });
-
+  createToken(user: UserEntity) {
     return {
       accessToken: this.jwtService.sign(
         {
