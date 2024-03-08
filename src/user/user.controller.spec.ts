@@ -34,6 +34,16 @@ describe('UserController', () => {
     expect(userService).toBeDefined();
   });
 
+  describe('Teste da aplicação dos Guards neste controle', () => {
+    test('Se os guards estão aplicadas', () => {
+      const guards = Reflect.getMetadata('__guards__', UserController);
+
+      expect(guards.length).toEqual(2);
+      expect(new guards[0]()).toBeInstanceOf(AuthGuard);
+      expect(new guards[1]()).toBeInstanceOf(RoleGuard);
+    });
+  });
+
   describe('Create', () => {
     test('Create method', async () => {
       const result = await userController.create(createUserDTO);
