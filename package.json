@@ -17,7 +17,7 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "pretest:e2e": "cross-env ENV=test npm run clear:db:test && npm run migrate:up",
+    "pretest:e2e": "cross-env ENV=test npm run clear:db:test && cross-env ENV=test npm run migration:up",
     "posttest:e2e": "cross-env ENV=test npm run clear:db:test",
     "test:e2e": "cross-env ENV=test jest --config ./test/jest-e2e.json",
     "typeorm:ts": "typeorm-ts-node-esm",

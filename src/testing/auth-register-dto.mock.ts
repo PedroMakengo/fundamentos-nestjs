@@ -1,7 +1,7 @@
 import { AuthRegisterDTO } from '../auth/dto/auth-register.dto';
 
 export const authRegisterDTO: AuthRegisterDTO = {
-  email: 'mariaantonio@gmail.com',
-  name: 'Maria António',
-  password: '1233455',
+  email: 'pmakengomiguel152@gmail.com',
+  name: 'Pedro Miguel',
+  password: '32424242424',
 };
